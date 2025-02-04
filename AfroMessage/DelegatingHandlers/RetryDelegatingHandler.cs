@@ -1,11 +1,5 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using Polly.Retry;
-using System.Net.Http;
+﻿using Polly.Retry;
 using Polly;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AfroMessage.DelegatingHandlers;
 

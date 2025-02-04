@@ -1,13 +1,6 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Web;
+﻿using System.Web;
 using System.Net.Http.Json;
 using System.Text.Json.Nodes;
-using Microsoft.Extensions.Options;
 
 namespace AfroMessage.DelegatingHandlers;
 

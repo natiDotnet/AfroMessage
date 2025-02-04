@@ -1,12 +1,7 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using Microsoft.Extensions.DependencyInjection;
-using AfroMessage;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using AfroMessage.DelegatingHandlers;
-using System.Net.Http;
-using System.Threading;
+
 namespace AfroMessage;
 
 public static class Startup

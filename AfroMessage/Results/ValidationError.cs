@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace AfroMessage.Results;
+﻿namespace AfroMessage.Results;
 
 public sealed record ApiError : Error
 {

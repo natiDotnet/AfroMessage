@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AfroMessage", "AfroMessage\AfroMessage.csproj", "{C6D10A0D-94D7-4B3E-BCF9-782574FB97D6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AfroMessage.Test", "AfroMessage.Test\AfroMessage.Test.csproj", "{4FBF5B85-6EC2-4307-ABA4-0044B5DEB513}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{C6D10A0D-94D7-4B3E-BCF9-782574FB97D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6D10A0D-94D7-4B3E-BCF9-782574FB97D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6D10A0D-94D7-4B3E-BCF9-782574FB97D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FBF5B85-6EC2-4307-ABA4-0044B5DEB513}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FBF5B85-6EC2-4307-ABA4-0044B5DEB513}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FBF5B85-6EC2-4307-ABA4-0044B5DEB513}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FBF5B85-6EC2-4307-ABA4-0044B5DEB513}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
