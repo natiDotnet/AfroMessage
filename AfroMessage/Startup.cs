@@ -19,7 +19,6 @@ public static class Startup
         services
             .AddHttpClient<IAfroMessage>()
             .AddHttpMessageHandler<ConfigDelegatingHandler>()
-            .AddHttpMessageHandler<RetryDelegatingHandler>()
             .AddTypedClient((client, sp) =>
             {
                 config ??= sp.GetRequiredService<IOptions<AfroMessageConfig>>().Value;
@@ -34,7 +33,8 @@ public static class Startup
                     PooledConnectionLifetime = TimeSpan.FromMinutes(15)
                 };
             })
-            .SetHandlerLifetime(Timeout.InfiniteTimeSpan);
+            .SetHandlerLifetime(Timeout.InfiniteTimeSpan)
+            .AddStandardResilienceHandler();
 
         return services;
     }
