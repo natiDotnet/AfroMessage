@@ -4,6 +4,14 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Title>AfroMessage SMS Client </Title>
+        <Description>AfroMessage SMS Client is a lightweight and easy-to-use C# library for sending SMS messages using the AfroMessage platform in Ethiopia. This package provides a simple API to send bulk or single SMS messages, check delivery status, and manage SMS campaigns.</Description>
+        <PackageProjectUrl>https://github.com/natiDotnet/AfroMessage</PackageProjectUrl>
+        <PackageIcon>afro.png</PackageIcon>
+        <RepositoryUrl>https://github.com/natiDotnet/AfroMessage</RepositoryUrl>
+        <PackageTags>afromessage, sms, ethiosms, afro, message</PackageTags>
+        <PackageOutputPath>./nupkg</PackageOutputPath>
     </PropertyGroup>
 
     <ItemGroup>
@@ -13,6 +21,13 @@
       <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
       <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
       <PackageReference Include="Polly" Version="8.5.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="afro.png">
+        <Pack>True</Pack>
+        <PackagePath>afro.png</PackagePath>
+      </None>
     </ItemGroup>
 
 </Project>
