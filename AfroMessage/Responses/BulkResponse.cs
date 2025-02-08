@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AfroMessage.Responses;
 
 public class BulkResponse
 {
-    public string Message { get; set; }
-    public string CampaignId { get; set; }
+    public string? Message { get; set; }
+    public string? CampaignId { get; set; }
 }
