@@ -7,7 +7,7 @@ using AfroMessage.Requests;
 
 namespace AfroMessage.Requests;
 
-public class BulkRequest(
+public record BulkRequest(
     string[] Recipients,
     string Message,
     string Campaign,
