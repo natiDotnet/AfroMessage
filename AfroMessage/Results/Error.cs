@@ -8,21 +8,19 @@ public record Error
         "Null value was provided",
         ErrorType.Failure);
 
-    public Error(string code, string description, ErrorType type, string? relatedObject = null)
+    public Error(string code, string description, ErrorType type)
     {
         Code = code;
         Description = description;
         Type = type;
-        RelatedObject = relatedObject;
     }
 
     public string Code { get; }
 
     public string Description { get; }
-    public string? RelatedObject { get; set; }
 
     public ErrorType Type { get; }
 
-    public static Error Failure(string code, string description, string? relatedObject = null) =>
-        new(code, description, ErrorType.Failure, relatedObject);
+    public static Error Failure(string code, string description) =>
+        new(code, description, ErrorType.Failure);
 }

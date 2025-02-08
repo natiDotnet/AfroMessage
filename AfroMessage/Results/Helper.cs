@@ -16,29 +16,24 @@ public static class Helper
     {
         if (obj == null)
             throw new ArgumentNullException(nameof(obj));
-
-        var json = JsonSerializer.Serialize(obj, SnakeCase);
-        var jsonObject = JsonNode.Parse(json)?.AsObject();
-
         // Build query parameters
         var query = HttpUtility.ParseQueryString(string.Empty);
-        foreach (var property in jsonObject)
+        foreach (var property in obj.GetType().GetProperties())
         {
-            var value = property.Value?.ToString();
-            Console.WriteLine("Vlaue: " + value);
+            var value = property.GetValue(obj)?.ToString();
             if (!string.IsNullOrEmpty(value))
             {
-                query[property.Key] = HttpUtility.UrlEncode(value);
+                query[property.Name] = HttpUtility.UrlEncode(value);
             }
         }
 
-        return query.ToString();
+        return query.ToString()!;
     }
 
     public static string[] GetErrors(this Result result)
     {
         if (result.Error is not ApiError errors)
-            return null;
+            return [result.Error.Description];
         return errors.Errors
             .Select(e => e.Description)
             .ToArray();

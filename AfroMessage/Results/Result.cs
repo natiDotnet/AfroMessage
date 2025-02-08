@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AfroMessage.Results;
 
@@ -31,13 +32,6 @@ public class Result
 
     public static Result<TValue> Failure<TValue>(Error error) =>
         new(default, false, error);
-
-    public override string ToString()
-    {
-        return $"""
-        IsSuccess: {IsSuccess}
-        """;
-    }
 }
 
 public class Result<TValue> : Result
@@ -58,6 +52,6 @@ public class Result<TValue> : Result
     public static implicit operator Result<TValue>(TValue? value) =>
         value is not null ? Success(value) : Failure<TValue>(Error.NullValue);
 
-    public static Result<TValue> ValidationFailure(Error error) =>
+    public static Result<TValue> ApiFailure(Error error) =>
         new(default, false, error);
 }

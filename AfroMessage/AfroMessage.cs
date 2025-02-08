@@ -1,8 +1,14 @@
-﻿using AfroMessage.Models;
-using AfroMessage.Results;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
 using System.Net.Http.Json;
-using System.Text.Json.Nodes;
 using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Threading.Tasks;
+using AfroMessage.Requests;
+using AfroMessage.Responses;
+using AfroMessage.Results;
 
 namespace AfroMessage;
 
@@ -10,34 +16,35 @@ public class AfroMessageClient(AfroMessageConfig config, HttpClient client) : IA
 {
     private async Task<Result<T>> HandleApiResponse<T>(HttpResponseMessage response)
     {
+        Console.WriteLine("Status Code: " + response.StatusCode);
         if (!response.IsSuccessStatusCode)
-            Result.Failure(Error.Failure(response.StatusCode.ToString(), await response.Content.ReadAsStringAsync()));
+            return Result.Failure<T>(Error.Failure(response.StatusCode.ToString(), await response.Content.ReadAsStringAsync()));
 
         var body = await response.Content.ReadFromJsonAsync<JsonNode>();
         Console.WriteLine("response: " + body);
-        if (body["acknowledge"].GetValue<string>() == "success")
+        if (body!["acknowledge"]?.GetValue<string>() == "success")
         {
             var success = body["response"].Deserialize<T>(Helper.SnakeCase);
-            return Result.Success(success);
+            return Result.Success<T>(success!);
         }
         else
         {
             var error = body["response"].Deserialize<ErrorResponse>();
-            var errorMessages = error.Errors
-                .Select(message => Error.Failure(message, message, error.RelatedObject))
-                .ToArray();
-            return Result<T>.ValidationFailure(new ApiError(errorMessages));
+            var errorMessages = error?.Errors
+                .Select(message => Error.Failure(message, message))
+                .ToArray() ?? [];
+            return Result<T>.ApiFailure(new ApiError(errorMessages));
         }
     }
 
-    public async Task<Result<BulkResponse>> BulkSendAsync(IEnumerable<string> recipients, string message, string campaign = "", string createCallback = "", string statusCallback = "")
+    public async Task<Result<BulkResponse>> BulkSendAsync(string[] recipients, string message, string campaign = "", string createCallback = "", string statusCallback = "")
     {
         var bulk = new BulkRequest(recipients, message, campaign, createCallback, statusCallback);
         var response = await client.PostAsJsonAsync("bulk_send", bulk);
         return await HandleApiResponse<BulkResponse>(response);
     }
 
-    public async Task<Result<BulkResponse>> BulkSendAsync(IEnumerable<Recipient> recipients, string campaign = "", string createCallback = "", string statusCallback = "")
+    public async Task<Result<BulkResponse>> BulkSendAsync(Recipient[] recipients, string campaign = "", string createCallback = "", string statusCallback = "")
     {
         var bulk = new BulkSeparateRequest(recipients, campaign, createCallback, statusCallback);
         var response = await client.PostAsJsonAsync("bulk_send", bulk);
@@ -58,17 +65,17 @@ public class AfroMessageClient(AfroMessageConfig config, HttpClient client) : IA
         return await HandleApiResponse<CodeResponse>(response);
     }
 
-    public async Task<Result<VerificationResponse>> VerifyCode(string recipient, string code)
+    public async Task<Result<VerificationResponse>> VerifyCodeAsync(string recipient, string code)
     {
-        var query = $"to{recipient}&code{code}";
-        var response = await client.GetAsync($"verify?{query}");
+        var query = new { To = recipient, Code = code };
+        var response = await client.GetAsync($"verify?{query.ToQueryParams()}");
         return await HandleApiResponse<VerificationResponse>(response);
     }
 
-    public async Task<Result<VerificationResponse>> VerifyCode(Guid verificationId, string code)
+    public async Task<Result<VerificationResponse>> VerifyCodeAsync(Guid verificationId, string code)
     {
-        var query = $"vc{verificationId}&code{code}";
-        var response = await client.GetAsync($"verify?{query}");
+        var query = new { Vc = verificationId, Code = code };
+        var response = await client.GetAsync($"verify?{query.ToQueryParams()}");
         return await HandleApiResponse<VerificationResponse>(response);
     }
 }

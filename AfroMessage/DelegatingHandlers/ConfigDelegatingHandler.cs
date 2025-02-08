@@ -1,6 +1,6 @@
-﻿using System.Web;
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
 using System.Text.Json.Nodes;
+using System.Web;
 
 namespace AfroMessage.DelegatingHandlers;
 
@@ -14,11 +14,11 @@ public class ConfigDelegatingHandler : DelegatingHandler
     }
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        Console.WriteLine("endpoint: " + request.RequestUri.ToString());
+        Console.WriteLine("endpoint: " + request.RequestUri?.ToString());
         if (request.Method == HttpMethod.Post)
         {
-            var body = await request.Content.ReadFromJsonAsync<JsonNode>();
-            body["from"] = config.Identifier;
+            var body = await request.Content?.ReadFromJsonAsync<JsonNode>(cancellationToken)!;
+            body!["from"] = config.Identifier;
             body["sender"] = config.Sender;
             request.Content = JsonContent.Create(body);
 
@@ -26,7 +26,7 @@ public class ConfigDelegatingHandler : DelegatingHandler
         }
         else if (request.Method == HttpMethod.Get)
         {
-            var uriBuilder = new UriBuilder(request.RequestUri);
+            var uriBuilder = new UriBuilder(request.RequestUri!);
             var query = HttpUtility.ParseQueryString(uriBuilder.Query);
             if (!string.IsNullOrWhiteSpace(config.Identifier))
                 query["from"] = config.Identifier;
