@@ -1,0 +1,6 @@
+@AfroMessage.SampleApi_HostAddress = http://localhost:5241
+
+GET {{AfroMessage.SampleApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
