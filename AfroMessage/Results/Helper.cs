@@ -32,10 +32,13 @@ public static class Helper
 
     public static string[] GetErrors(this Result result)
     {
-        if (result.Error is not ApiError errors)
-            return [result.Error.Description];
-        return errors.Errors
-            .Select(e => e.Description)
-            .ToArray();
+        return result.Error switch
+        {
+            var err when err == Error.None => [],  // Return empty array for "no error"
+            ApiError apiError => apiError.Errors?
+                .Select(e => e.Description)
+                .ToArray() ?? [],
+            _ => [result.Error.Description]  // For all other errors
+        };
     }
 }
