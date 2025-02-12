@@ -48,7 +48,7 @@ app.MapGet("/weatherforecast", () =>
 app.MapGet("/SayHello/{phone}/Config", async (string phone) => 
 {
     var afro = new AfroMessageClient(config);
-    var result = await afro.SendAsync(phone, "Hello 👋");
+    var result = await afro.SendMessageAsync(phone, "Hello 👋");
     return result.IsFailure ?
         Results.BadRequest(result.Error) :
         Results.Ok(result.Value);
@@ -57,7 +57,7 @@ app.MapGet("/SayHello/{phone}/Config", async (string phone) =>
 app.MapGet("/SayHello/{phone}/Token", async (string phone) => 
 {
     var afro = new AfroMessageClient(token: config.Token, identifier: config.Identifier, sender: config.Sender);
-    var result = await afro.SendAsync(phone, "Hello 👋");
+    var result = await afro.SendMessageAsync(phone, "Hello 👋");
     return result.IsFailure ?
         Results.BadRequest(result.Error) :
         Results.Ok(result.Value);
@@ -66,7 +66,7 @@ app.MapGet("/SayHello/{phone}/Token", async (string phone) =>
 
 app.MapGet("/SayHello/{phone}/DI", async (string phone, IAfroMessageClient afro) => 
 {
-    var result = await afro.SendAsync(phone, "Hello 👋");
+    var result = await afro.SendMessageAsync(phone, "Hello 👋");
     return result.IsFailure ?
         Results.BadRequest(result.Error) :
         Results.Ok(result.Value);

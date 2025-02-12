@@ -66,28 +66,28 @@ public class AfroMessageClient : IAfroMessageClient
         }
     }
 
-    public async Task<Result<BulkResponse>> BulkSendAsync(string[] recipients, string message, string campaign = "", string createCallback = "", string statusCallback = "")
+    public async Task<Result<BulkResponse>> SendBulkMessageAsync(string[] recipients, string message, string campaign = "", string createCallback = "", string statusCallback = "")
     {
         var bulk = new BulkRequest(recipients, message, campaign, createCallback, statusCallback);
         var response = await client.PostAsJsonAsync("bulk_send", bulk);
         return await HandleApiResponse<BulkResponse>(response);
     }
 
-    public async Task<Result<BulkResponse>> BulkSendAsync(Recipient[] recipients, string campaign = "", string createCallback = "", string statusCallback = "")
+    public async Task<Result<BulkResponse>> SendBulkMessageAsync(Recipient[] recipients, string campaign = "", string createCallback = "", string statusCallback = "")
     {
         var bulk = new BulkSeparateRequest(recipients, campaign, createCallback, statusCallback);
         var response = await client.PostAsJsonAsync("bulk_send", bulk);
         return await HandleApiResponse<BulkResponse>(response);
     }
 
-    public async Task<Result<MessageResponse>> SendAsync(string recipient, string message, int template = 0, string callback = "")
+    public async Task<Result<MessageResponse>> SendMessageAsync(string recipient, string message, int template = 0, string callback = "")
     {
         var sms = new MessageRequest(recipient, message, template, callback);
         var response = await client.PostAsJsonAsync("send", sms, Helper.SnakeCase);
         return await HandleApiResponse<MessageResponse>(response);
     }
 
-    public async Task<Result<CodeResponse>> SendOTPAsync(CodeRequest request)
+    public async Task<Result<CodeResponse>> SendCodeAsync(CodeRequest request)
     {
         var query = request.ToQueryParams();
         var response = await client.GetAsync($"challenge?{query}");

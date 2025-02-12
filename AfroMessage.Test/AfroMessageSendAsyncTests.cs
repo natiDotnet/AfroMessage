@@ -26,7 +26,7 @@ public class AfroMessageSendAsyncTests
         var config = new AfroMessageConfig();
         var afro = new AfroMessageClient(config, client);
 
-        var response = await afro.SendAsync("836363883", "Send Message test");
+        var response = await afro.SendMessageAsync("836363883", "Send Message test");
         Assert.True(response.IsFailure);
         Assert.False(response.IsSuccess);
         Assert.Throws<InvalidOperationException>(() => response.Value.ToString());
@@ -55,7 +55,7 @@ public class AfroMessageSendAsyncTests
         };
         var config = new AfroMessageConfig();
         var afro = new AfroMessageClient(config, client);
-        var response = await afro.SendAsync("836363883", "Send Message test");
+        var response = await afro.SendMessageAsync("836363883", "Send Message test");
         
         Assert.True(response.IsFailure);
         Assert.False(response.IsSuccess);
@@ -86,10 +86,10 @@ public class AfroMessageSendAsyncTests
         var config = new AfroMessageConfig();
         var afro = new AfroMessageClient(config, client);
 
-        var response = await afro.SendAsync("836363883", "Send Message test");
+        var response = await afro.SendMessageAsync("836363883", "Send Message test");
         Assert.False(response.IsFailure);
         Assert.True(response.IsSuccess);
-        Assert.IsType<MessageResponse>(() => response.Value);
+        Assert.IsType<MessageResponse>(response.Value);
         Assert.Equivalent(response.Value.To, "+251912345678");
         Assert.Empty(response.Error.Description);
         Assert.Empty(response.GetErrors());
