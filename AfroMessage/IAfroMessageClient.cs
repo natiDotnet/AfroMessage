@@ -8,7 +8,7 @@ using AfroMessage.Results;
 
 namespace AfroMessage;
 
-public interface IAfroMessage
+public interface IAfroMessageClient
 {
     Task<Result<MessageResponse>> SendAsync(string recipient, string message, int template = 0, string callback = "");
     Task<Result<BulkResponse>> BulkSendAsync(string[] recipients, string message, string campaign = "", string createCallback = "", string statusCallback = "");

@@ -6,14 +6,37 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
+using AfroMessage.DelegatingHandlers;
 using AfroMessage.Requests;
 using AfroMessage.Responses;
 using AfroMessage.Results;
+using System.Net.Http.Headers;
+using Microsoft.Extensions.Diagnostics.Latency;
+using System.Diagnostics;
 
 namespace AfroMessage;
 
-public class AfroMessageClient(AfroMessageConfig config, HttpClient client) : IAfroMessage
+public class AfroMessageClient : IAfroMessageClient
 {
+    private readonly HttpClient client;
+    private readonly AfroMessageConfig config;
+    public AfroMessageClient(AfroMessageConfig config, HttpClient? client = null)
+    {
+        client ??= new HttpClient(new ConfigDelegatingHandler(config)
+        {
+            InnerHandler = new RetryDelegatingHandler()
+        })
+        {
+            BaseAddress = new Uri(AfroMessageConfig.Url)
+        };
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", config.Token);
+        this.config = config;
+        this.client = client;
+    }
+    public AfroMessageClient(string token, string identifier, string sender) 
+        : this( new AfroMessageConfig { Token = token, Identifier = identifier, Sender = sender})
+    { }
+
     private async Task<Result<T>> HandleApiResponse<T>(HttpResponseMessage response)
     {
         Console.WriteLine("Status Code: " + response.StatusCode);
