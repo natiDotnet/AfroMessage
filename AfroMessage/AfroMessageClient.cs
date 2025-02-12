@@ -25,6 +25,12 @@ public class AfroMessageClient : IAfroMessageClient
         client ??= new HttpClient(new ConfigDelegatingHandler(config)
         {
             InnerHandler = new RetryDelegatingHandler()
+            {
+                InnerHandler = new SocketsHttpHandler()
+                {
+                    PooledConnectionLifetime = TimeSpan.FromMinutes(15)
+                }
+            }
         })
         {
             BaseAddress = new Uri(AfroMessageConfig.Url)
@@ -34,7 +40,7 @@ public class AfroMessageClient : IAfroMessageClient
         this.client = client;
     }
     public AfroMessageClient(string token, string identifier, string sender) 
-        : this( new AfroMessageConfig { Token = token, Identifier = identifier, Sender = sender})
+       : this( new AfroMessageConfig { Token = token, Identifier = identifier, Sender = sender})
     { }
 
     private async Task<Result<T>> HandleApiResponse<T>(HttpResponseMessage response)
