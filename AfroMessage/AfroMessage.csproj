@@ -12,6 +12,7 @@
         <RepositoryUrl>https://github.com/natiDotnet/AfroMessage</RepositoryUrl>
         <PackageTags>afromessage, sms, ethiosms, afro, message</PackageTags>
         <PackageOutputPath>./nupkg</PackageOutputPath>
+        <PackageReadmeFile>../README.md</PackageReadmeFile>
     </PropertyGroup>
 
     <ItemGroup>
@@ -24,6 +25,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Include="../README.md">
+        <Pack>True</Pack>
+        <PackagePath>../README.md</PackagePath>
+      </None>
       <None Include="afro.png">
         <Pack>True</Pack>
         <PackagePath>afro.png</PackagePath>
